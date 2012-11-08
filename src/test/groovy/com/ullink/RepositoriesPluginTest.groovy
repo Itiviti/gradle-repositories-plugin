@@ -12,14 +12,14 @@ class RepositoriesPluginTest {
         project.apply plugin: 'repositories'
             
         project.repositories.clear()
-        project.repositories { nuget('foo') }
-        testArtifact(project, 'foo', 'ILRepack', '1.17+', type: 'nupkg')
-        testArtifact(project, 'foo', 'ILRepack', '1.18', type: 'nupkg')
-        
-        project.repositories.clear()
         project.repositories { googlecode('facebook-java-api') }
         testArtifact(project, 'facebook-java-api', 'facebook-java-api', '2.0.+', classifier: 'bin', type: 'zip')
         testArtifact(project, 'facebook-java-api', 'facebook-java-api', '2.0.5', classifier: 'bin', type: 'zip')
+
+        project.repositories.clear()
+        project.repositories { nuget('foo') }
+        testArtifact(project, 'foo', 'ILRepack', '1.17+', type: 'nupkg')
+        testArtifact(project, 'foo', 'ILRepack', '1.18', type: 'nupkg')
         
         project.repositories.clear()
         project.repositories { sourceforge('ikvm','[module]/[revision]/[artifact]-[revision].[ext]') }

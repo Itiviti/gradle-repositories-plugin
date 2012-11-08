@@ -25,7 +25,7 @@ class RepositoriesPlugin implements Plugin<Project> {
     
     static void setupAndAddResolver(Project project, RepositoryHandler del, DependencyResolver resolver, String repoType, String org, List<String> patterns, def closure) {
         def repoName = org ? repoType+'-'+org : repoType
-        project.logger.info "Adding ${repoName} repository wth pattern: ${patterns}"
+        project.logger.info "Adding ${repoName} repository with pattern: ${patterns}"
         del.add(resolver) {
             name = repoName
             for (String str : patterns) {
@@ -110,7 +110,6 @@ class RepositoriesPlugin implements Plugin<Project> {
                             ret += matches.findAll { it.startsWith(listPath) && !it.endsWith('/timeline') }
                                 .collect { new URL(url, it)}
                         }
-                        println ret
                         ret
                     }
                 }
