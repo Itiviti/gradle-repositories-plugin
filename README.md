@@ -47,41 +47,54 @@ When applied (like this), this plugin will add extra methods to RepositoryHandle
 
 ## Supported repositories methods
 
-    googlecode(String group = null, String subPattern = null, Closure closure = null)
+### GoogleCode
+
+    repositories {
+        googlecode(String group = null, String subPattern = null, Closure closure = null)
+    }
     
-- group: this will match both your googlecode project and your dependency group (*recommended* to restrict lookup)
+- *group:* this will match both your googlecode project and your dependency group ( **recommended** to restrict lookup)
 
-- subPattern: to customize artifact naming pattern, default is '\[artifact]-\[revision](-\[classifier]).\[ext]'
+- *subPattern:* to customize artifact naming pattern, default is '\[artifact]-\[revision](-\[classifier]).\[ext]'
 
-- closure: extra configuration code for your repository (can be used to customize its name or add extra patterns)
+- *closure:* extra configuration code for your repository (can be used to customize its name or add extra patterns)
 
-    
-    sourceforge(String group, String subPattern, Closure closure = null)
-    
-- group: this will match both your googlecode project and your dependency group
+### SourceForge
 
-- subPattern: sourceforge supports folders, so almost every project has its own download pattern, e.g. :
+    repositories {
+        sourceforge(String group, String subPattern, Closure closure = null)
+    }
+   
+- *group:* this will match both your googlecode project and your dependency group
+
+- *subPattern:* sourceforge supports folders, so almost every project has its own download pattern, e.g. :
     sourceforge('ikvm','[module]/[revision]/[artifact]-[revision].[ext]')
 
-- closure: extra configuration code for your repository (can be used to customize its name or add extra patterns)
+- *closure:* extra configuration code for your repository (can be used to customize its name or add extra patterns)
     
+### GitHub
     
-    github(String group = null, String subPattern = null, Closure closure = null)
+    repositories {
+        github(String group = null, String subPattern = null, Closure closure = null)
+    }
     
-- group: this will match both your github project and your dependency group (*recommended* to restrict lookup)
+- *group:* this will match both your github project and your dependency group ( **recommended** to restrict lookup)
 
-- subPattern: to customize artifact naming pattern, default is '\[artifact]-\[revision](-\[classifier]).\[ext]'
+- *subPattern:* to customize artifact naming pattern, default is '\[artifact]-\[revision](-\[classifier]).\[ext]'
 
-- closure: extra configuration code for your repository (can be used to customize its name or add extra patterns)
+- *closure:* extra configuration code for your repository (can be used to customize its name or add extra patterns)
 
+### NuGet
     
-    nuget(String group = null, Closure closure = null)
-    
-- group: this will match both your nuget project and your dependency group (*recommended* to restrict lookup)
+    repositories {
+        nuget(String group = null, Closure closure = null)
+    }
 
-- closure: extra configuration code for your repository (can be used to customize its name or add extra patterns)
+- *group:* this will match both your nuget project and your dependency group ( **recommended** to restrict lookup)
+
+- *closure:* extra configuration code for your repository (can be used to customize its name or add extra patterns)
 
 
 # License
 
-All these plugins are licensed under the [Creative Commons — CC0 1.0 Universal](http://creativecommons.org/publicdomain/zero/1.0/) license with no warranty (expressed or implied) for any purpose.
+All these plugins are licensed under the [Creative Commons ï¿½ CC0 1.0 Universal](http://creativecommons.org/publicdomain/zero/1.0/) license with no warranty (expressed or implied) for any purpose.
