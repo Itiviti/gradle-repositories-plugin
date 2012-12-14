@@ -1,4 +1,4 @@
-# Gradle Repositories Plugin [![Build Status](https://buildhive.cloudbees.com/job/gluck/job/gradle-repositories-plugin/badge/icon)](https://buildhive.cloudbees.com/job/gluck/job/gradle-repositories-plugin/)
+# Gradle Repositories Plugin [![Build Status](https://buildhive.cloudbees.com/job/Ullink/job/gradle-repositories-plugin/badge/icon)](https://buildhive.cloudbees.com/job/gluck/job/gradle-repositories-plugin/)
 
 This plugin extends the gradle repository class with some helpers to access download pages from various projects as artifact repositories.
 It supports download pages from the following sites:
