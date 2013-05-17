@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>gradle-repositories-plugin</name>
-	<comment></comment>
+	<comment>gradle-repositories-plugin is a Gradle plugin that provide helpers to make various download sites available as Gradle repositories</comment>
 	<projects>
 	</projects>
 	<buildSpec>
