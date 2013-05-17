@@ -25,16 +25,6 @@ class RepositoriesPluginTest {
         project.repositories { sourceforge('ikvm','[module]/[revision]/[artifact]-[revision].[ext]') }
         testArtifact(project, 'ikvm', 'ikvm', '0.46.0.+', artifact: 'ikvmbin', type: 'zip')
         testArtifact(project, 'ikvm', 'ikvm', '0.46.0.1', artifact: 'ikvmbin', type: 'zip')
-        
-        project.repositories.clear()
-        project.repositories { github('gluck','[module]/[artifact]_[revision].[ext]') }
-        testArtifact(project, 'gluck', 'il-repack', '1.17+', artifact: 'ILRepack', type: 'zip')
-        testArtifact(project, 'gluck', 'il-repack', '1.18+', artifact: 'ILRepack', type: 'zip')
-        
-        project.repositories.clear()
-        project.repositories { github('RobertFischer') }
-        testArtifact(project, 'RobertFischer', 'gradle-gaea-plugin', '0.0.+')
-        testArtifact(project, 'RobertFischer', 'gradle-gaea-plugin', '0.0.3')
     }
     
     def testArtifact(Map others = [:], Project project, String aGroup, String aName, String aVersion) {

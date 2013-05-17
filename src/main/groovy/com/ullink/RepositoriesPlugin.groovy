@@ -19,7 +19,6 @@ class RepositoriesPlugin implements Plugin<Project> {
     void apply(Project project) {
         setupSourceforgeRepositories(project)
         setupGooglecodeRepositories(project)
-        setupGithubRepositories(project)
         setupNugetRepositories(project)
     }
     
@@ -147,37 +146,6 @@ class RepositoriesPlugin implements Plugin<Project> {
         }
     }
 
-    static boolean setupGithubRepositories(Project project) {
-        if (!project.repositories.metaClass.respondsTo(project.repositories, 'github', String, String, Object)) {
-            project.logger.debug 'Adding github(String?,String?,Closure?) method to project RepositoryHandler'
-            project.repositories.metaClass.github = { String org = null, String subPattern = null, def closure = null ->
-                // http://cloud.github.com/downloads/RobertFischer/gradle-gaea-plugin/gradle-gaea-plugin-0.0.3.jar
-                // http://cloud.github.com/downloads/RobertFischer/gradle-gaea-plugin/gradle-gaea-plugin-0.0.3.pom
-                // http://cloud.github.com/downloads/gluck/il-repack/ILRepack_1.18.zip
-                subPattern = subPattern ?: '[module]/[artifact]-[revision](-[classifier]).[ext]'
-                def pat = 'http://cloud.github.com/downloads/[organisation]/' + subPattern
-                def resolver = getResolver(org)
-                resolver.repository.lister = new ApacheURLLister() {
-                    // http://cloud.github.com/downloads/RobertFischer/gradle-gaea-plugin/
-                    // ->
-                    // http://github.com/RobertFischer/gradle-gaea-plugin/downloads
-                    public List retrieveListing(URL origUrl, boolean includeFiles, boolean includeDirectories) throws IOException {
-                        if (!includeFiles || !(origUrl.path =~ "^/downloads/")) {
-                            return []
-                        }
-                        URL url = new URL("https://github.com/${origUrl.path.substring(11)}/downloads")
-                        getAllHrefsPath(url)
-                            .findAll { it =~ "^/downloads/"}
-                            .collect { new URL(origUrl, it) }
-                    }
-                }
-                setupAndAddResolver(project, delegate, resolver, 'github', org, [pat], closure)
-            }
-            return true
-        }
-    }
-
-    
     static boolean setupNugetRepositories(Project project) {
         if (!project.repositories.metaClass.respondsTo(project.repositories, 'nuget', String, String, Object)) {
             project.logger.debug 'Adding nuget(String?,Closure?) method to project RepositoryHandler'
