@@ -20,8 +20,9 @@ class RepositoriesPlugin implements Plugin<Project> {
         setupSourceforgeRepositories(project)
         setupGooglecodeRepositories(project)
         setupNugetRepositories(project)
+        setupBitbucketRepositories(project)
     }
-    
+
     static void setupAndAddResolver(Project project, RepositoryHandler del, DependencyResolver resolver, String repoType, String org, List<String> patterns, def closure) {
         def repoName = org ? repoType+'-'+org : repoType
         project.logger.info "Adding ${repoName} repository with pattern: ${patterns}"
@@ -172,6 +173,32 @@ class RepositoriesPlugin implements Plugin<Project> {
                     }
                 }
                 setupAndAddResolver(project, delegate, resolver, 'nuget', org, [pat], closure)
+            }
+        }
+    }
+
+    static boolean setupBitbucketRepositories(Project project) {
+        if (!project.repositories.metaClass.respondsTo(project.repositories, 'bitbucket', String, String, Object)) {
+            project.logger.debug 'Adding bitbucket(String?,Closure?) method to project RepositoryHandler'
+            project.repositories.metaClass.bitbucket = { String org = null, String subPattern = null, def closure = null ->
+                // https://bitbucket.org/shaunwilde/opencover/downloads/opencover.4.5.1604.zip
+
+                subPattern = subPattern ?: '[artifact]-[revision](-[classifier]).[ext]'
+                def pat = 'http://cdn.bitbucket.org/[organization]/[module]/downloads/'+subPattern
+                def resolver = getResolver(org)
+                resolver.repository.lister = new ApacheURLLister() {
+                    // http://bitbucket.org/shaunwilde/opencover/downloads/
+                    public List retrieveListing(URL origUrl, boolean includeFiles, boolean includeDirectories) throws IOException {
+                        int i = origUrl.path.indexOf('/downloads/')
+                        if (!includeFiles || i == -1) {
+                            return []
+                        }
+                        URL url = new URL("https://bitbucket.org${origUrl.path.substring(i+11)}")
+                        getAllHrefs(url)
+                            .findAll { it.protocol == origUrl.protocol && it.host == origUrl.host && it.port == origUrl.port && it.path.startsWith(origUrl.path) }
+                    }
+                }
+                setupAndAddResolver(project, delegate, resolver, 'bitbucket', org, [pat], closure)
             }
         }
     }
