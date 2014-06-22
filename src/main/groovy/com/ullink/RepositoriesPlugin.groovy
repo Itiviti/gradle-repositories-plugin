@@ -20,6 +20,7 @@ class RepositoriesPlugin implements Plugin<Project> {
         setupSourceforgeRepositories(project)
         setupGooglecodeRepositories(project)
         setupNugetRepositories(project)
+        setupGithubRepositories(project)
         setupBitbucketRepositories(project)
     }
 
@@ -143,6 +144,37 @@ class RepositoriesPlugin implements Plugin<Project> {
                 }
                 setupAndAddResolver(project, delegate, resolver, 'googlecode', org, [pat], closure)
             }
+            return true
+        }
+    }
+
+    static boolean setupGithubRepositories(Project project) { 
+        if (!project.repositories.metaClass.respondsTo(project.repositories, 'github', String, String, Object)) {
+            project.logger.debug 'Adding github(String?,String?,Closure?) method to project RepositoryHandler'
+            project.repositories.metaClass.github = { String org = null, String subPattern = null, def closure = null ->
+                subPattern = subPattern ?: '[revision]/[artifact]-[revision](-[classifier]).[ext]'
+                def pat = 'https://github.com/[organisation]/[artifact]/releases/download/' + subPattern
+                def resolver = getNoHeadResolver(org)
+                resolver.repository.lister = new ApacheURLLister() {
+                    public List retrieveListing(URL origUrl, boolean includeFiles, boolean includeDirectories) throws IOException {
+                        if (!includeFiles || !(origUrl.path =~ "/releases/?")) {
+                            return []
+                        }
+
+                        // remove /download/ path element 
+                        def url = new URL(origUrl.toString()[0..-10])
+
+                        getAllHrefsPath(url)
+                            .findAll { it =~ "/download/" }
+                            .collect {
+                                // delete artifact file from download url
+                                new URL(origUrl, it.split('/')[1..-2].join('/')) }
+                    }
+                }
+
+                setupAndAddResolver(project, delegate, resolver, 'github', org, [pat], closure)
+            }
+
             return true
         }
     }

@@ -72,6 +72,21 @@ When applied (like this), this plugin will add extra methods to RepositoryHandle
 
 - *closure:* extra configuration code for your repository (can be used to customize its name or add extra patterns)
     
+## GitHub
+
+Based on GitHub Releases.
+    
+    repositories {
+        github(String group = null, String subPattern = null, Closure closure = null)
+    }
+    
+- *group:* this will match both your github project and your dependency group ( **recommended** to restrict lookup)
+
+- *subPattern:* to customize artifact naming pattern, default is '\[revision]/\[artifact]-\[revision](-\[classifier]).\[ext]'
+
+- *closure:* extra configuration code for your repository (can be used to customize its name or add extra patterns)
+
+
 ### NuGet
     
     repositories {
