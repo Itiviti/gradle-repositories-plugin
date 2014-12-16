@@ -10,26 +10,10 @@ class RepositoriesPluginTest {
     public void repositoriesPluginAppliesToProject() {
         Project project = ProjectBuilder.builder().build()
         project.apply plugin: 'repositories'
-            
-        project.repositories.clear()
-        project.repositories { googlecode('facebook-java-api') }
-        testArtifact(project, 'facebook-java-api', 'facebook-java-api', '2.0.+', classifier: 'bin', type: 'zip')
-        testArtifact(project, 'facebook-java-api', 'facebook-java-api', '2.0.5', classifier: 'bin', type: 'zip')
 
-        project.repositories.clear()
-        project.repositories { nuget('foo') }
-        testArtifact(project, 'foo', 'ILRepack', '1.17+', type: 'nupkg')
-        testArtifact(project, 'foo', 'ILRepack', '1.18', type: 'nupkg')
-        
         project.repositories.clear()
         project.repositories { sourceforge('ikvm','[module]/[revision]/[artifact]-[revision].[ext]') }
-        testArtifact(project, 'ikvm', 'ikvm', '0.46.0.+', artifact: 'ikvmbin', type: 'zip')
         testArtifact(project, 'ikvm', 'ikvm', '0.46.0.1', artifact: 'ikvmbin', type: 'zip')
-
-        project.repositories.clear()
-        project.repositories { github('medien-dresden') }
-        testArtifact(project, 'medien-dresden', 'comprot-frontend', '1.0.+')
-        testArtifact(project, 'medien-dresden', 'comprot-frontend', '1.0.0-SNAPSHOT')
     }
     
     def testArtifact(Map others = [:], Project project, String aGroup, String aName, String aVersion) {
